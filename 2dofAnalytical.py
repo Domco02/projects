@@ -56,5 +56,3 @@ if __name__ == "__main__":
     plot_arm(0.5, 1.5)
     plot_arm(0, 2)
     plot_arm(3, 1.5) 
-
-

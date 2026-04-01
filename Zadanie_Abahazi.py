@@ -14,16 +14,16 @@ def numerical_ik(robot_id, end_effector_index, target_pos, joint_indices,
         link_state = p.getLinkState(robot_id, end_effector_index, computeForwardKinematics=True)
         current_pos = np.array(link_state[4])
 
-        # Draw trail line each iteration                     # <-- added
-        if prev_pos is not None:                             # <-- added
-            p.addUserDebugLine(                              # <-- added
-                prev_pos.tolist(),                           # <-- added
-                current_pos.tolist(),                        # <-- added
-                lineColorRGB=[1, 0.5, 0],                   # <-- added
-                lineWidth=2,                                 # <-- added
-                lifeTime=0                                   # <-- added
-            )                                                # <-- added
-        prev_pos = current_pos.copy()                        # <-- added
+        # Draw trail line each iteration                    
+        if prev_pos is not None:                           
+            p.addUserDebugLine(                              
+                prev_pos.tolist(),                           
+                current_pos.tolist(),                        
+                lineColorRGB=[1, 0.5, 0],                  
+                lineWidth=2,                                 
+                lifeTime=0                                   
+            )                                                
+        prev_pos = current_pos.copy()                       
 
         error = np.array(target_pos) - current_pos
         if np.linalg.norm(error) < threshold:
@@ -63,19 +63,20 @@ if __name__ == "__main__":
         if p.getJointInfo(kuka_id, i)[2] != p.JOINT_FIXED
     ]
 
-    waypoints = [                                            # <-- added
-        [0.7,  0.1,  0.5],                                  # <-- added (original point)
-        [0.4,  0.5,  0.6],                                  # <-- added
-        [0.6, -0.4,  0.7],                                  # <-- added
-        [0.3,  0.0,  0.9],                                  # <-- added
-        [0.5,  0.3,  0.3],                                  # <-- added
-    ]                                                        # <-- added
+    waypoints = [                                            
+        [0.7,  0.1,  0.5],                                 
+        [0.4,  0.5,  0.6],                                  
+        [0.6, -0.4,  0.7],                                  
+        [0.3,  0.0,  0.9],                                  
+        [0.5,  0.3,  0.3],                                  
+    ]                                                        
 
-    for wp in waypoints:                                     # <-- added (was single target_pos)
+    for wp in waypoints:                                     
         numerical_ik(kuka_id, end_effector_index, wp, movable_joints)
         final_pos = p.getLinkState(kuka_id, end_effector_index)[4]
         print("Target: ", np.round(wp, 3))
         print("Achieved:", np.round(final_pos, 3))
 
     input("Press Enter to disconnect...")
-    p.disconnect()
+    
+    p.disconnect() 
